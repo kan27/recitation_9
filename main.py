@@ -31,13 +31,20 @@ def prim(graph):
                 return prim_helper(visited, frontier, tree)
         
     # pick first node as source arbitrarily
-    source = list(graph.keys())[0]
-    frontier = []
-    heappush(frontier, (0, source, source))
+    #source = list(graph.keys())[0]
+    #frontier = []
+    #heappush(frontier, (0, source, source))
     visited = set()  # store the visited nodes (don't need distance anymore)
-    tree = set()
-    prim_helper(visited, frontier, tree)
-    return tree
+    trees = set()
+
+    for node in graph.keys():
+        if node not in visited:
+            frontier = []
+            heappush (frontier (0, node, node))
+            tree = set()
+            prim_helper(visited, frontier, tree)
+            trees.append(tree)
+    return trees
 
 def mst_from_points(points):
     """
@@ -52,6 +59,25 @@ def mst_from_points(points):
       a list of edges of the form (weight, node1, node2) indicating the minimum spanning
       tree connecting the cities in the input.
     """
+    graph = defaultdict(list)
+
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            p1 = points[i]
+            p2 = points[j]
+
+            city_name1= p1[0]
+            city_name2= p2[0]
+
+            weight = euclidean_distance(p1, p2)
+
+            graph[city_name1].append((city_name2, weight))
+            graph[city_name1].append((city_name2, weight))
+
+    tree = prim(graph)
+    return tree[0]
+
+
     ###TODO
     pass
 
