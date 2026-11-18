@@ -21,10 +21,13 @@ def prim(graph):
             else:
                 print('visiting', node)
                 # record this edge in the tree
-                tree.add((weight, node, parent))
+                #tree.add((weight, node, parent))
+                n1, n2 = sorted([node, parent])
+                tree.add((weight, n1, n2))
                 visited.add(node)
                 for neighbor, w in graph[node]:
-                    heappush(frontier, (w, neighbor, node))    
+                    if neighbor not in visited:
+                        heappush(frontier, (w, neighbor, node))    
                     # compare with dijkstra:
                     # heappush(frontier, (distance + weight, neighbor))                
 
@@ -35,12 +38,12 @@ def prim(graph):
     #frontier = []
     #heappush(frontier, (0, source, source))
     visited = set()  # store the visited nodes (don't need distance anymore)
-    trees = set()
+    trees = []
 
-    for node in graph.keys():
+    for node in list(graph.keys()):
         if node not in visited:
             frontier = []
-            heappush (frontier (0, node, node))
+            heappush (frontier, (0, node, node))
             tree = set()
             prim_helper(visited, frontier, tree)
             trees.append(tree)
@@ -72,7 +75,7 @@ def mst_from_points(points):
             weight = euclidean_distance(p1, p2)
 
             graph[city_name1].append((city_name2, weight))
-            graph[city_name1].append((city_name2, weight))
+            graph[city_name2].append((city_name1, weight))
 
     tree = prim(graph)
     return tree[0]
